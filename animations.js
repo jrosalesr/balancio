@@ -55,6 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
       };
       requestAnimationFrame(step);
     };
+    var isInViewport = function (el) {
+      var rect = el.getBoundingClientRect();
+      return rect.top < window.innerHeight && rect.bottom > 0;
+    };
     if ('IntersectionObserver' in window) {
       var countObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
@@ -63,8 +67,14 @@ document.addEventListener('DOMContentLoaded', function () {
             countObserver.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.6 });
-      counters.forEach(function (el) { countObserver.observe(el); });
+      }, { threshold: 0.1 });
+      counters.forEach(function (el) {
+        if (isInViewport(el)) {
+          animateCount(el);
+        } else {
+          countObserver.observe(el);
+        }
+      });
     } else {
       counters.forEach(animateCount);
     }
