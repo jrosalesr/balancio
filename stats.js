@@ -27,6 +27,13 @@ window.BALANCIO_STATS = [
     neobancos: 0,
     comisionesOcultas: 2,
     recomendacionesPago: 2
+  },
+  {
+    articulo: "Bitcoin vs fondos indexados: dónde meter tus primeros 500€",
+    apps: 0,
+    neobancos: 0,
+    comisionesOcultas: 2,     // comisiones de exchange + comisión de fondos
+    recomendacionesPago: 1
   }
 
   // 👇 Copia este bloque y pégalo aquí arriba cuando publiques un artículo nuevo:
