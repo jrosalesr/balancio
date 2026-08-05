@@ -39,44 +39,24 @@ document.addEventListener('DOMContentLoaded', function () {
     setStat('stat-recomendaciones', totals.recomendacionesPago);
   }
 
-  // --- Animated counters (ledger card stats) ---
+  // --- Animated counters (ledger card stats) — se animan al cargar, sin depender del scroll ---
   var counters = document.querySelectorAll('[data-count-to]');
-  if (counters.length && !prefersReduced) {
-    var animateCount = function (el) {
-      var target = parseInt(el.getAttribute('data-count-to'), 10);
-      var duration = 900;
-      var start = null;
-      var step = function (ts) {
-        if (start === null) start = ts;
-        var progress = Math.min((ts - start) / duration, 1);
-        var eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.round(eased * target);
-        if (progress < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    };
-    var isInViewport = function (el) {
-      var rect = el.getBoundingClientRect();
-      return rect.top < window.innerHeight && rect.bottom > 0;
-    };
-    if ('IntersectionObserver' in window) {
-      var countObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            animateCount(entry.target);
-            countObserver.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
-      counters.forEach(function (el) {
-        if (isInViewport(el)) {
-          animateCount(el);
-        } else {
-          countObserver.observe(el);
-        }
-      });
-    } else {
-      counters.forEach(animateCount);
+  var animateCount = function (el) {
+    var target = parseInt(el.getAttribute('data-count-to'), 10) || 0;
+    if (prefersReduced) {
+      el.textContent = target;
+      return;
     }
-  }
+    var duration = 900;
+    var start = null;
+    var step = function (ts) {
+      if (start === null) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target);
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+  counters.forEach(animateCount);
 });
