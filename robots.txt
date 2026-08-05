@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jrosalesr.github.io/balancio/sitemap.xml
