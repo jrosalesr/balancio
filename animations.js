@@ -19,6 +19,26 @@ document.addEventListener('DOMContentLoaded', function () {
     revealEls.forEach(function (el) { observer.observe(el); });
   }
 
+  // --- Suma automática de estadísticas (a partir de stats.js) ---
+  if (window.BALANCIO_STATS && Array.isArray(window.BALANCIO_STATS)) {
+    var totals = window.BALANCIO_STATS.reduce(function (acc, item) {
+      acc.apps += item.apps || 0;
+      acc.neobancos += item.neobancos || 0;
+      acc.comisionesOcultas += item.comisionesOcultas || 0;
+      acc.recomendacionesPago += item.recomendacionesPago || 0;
+      return acc;
+    }, { apps: 0, neobancos: 0, comisionesOcultas: 0, recomendacionesPago: 0 });
+
+    var setStat = function (id, value) {
+      var el = document.getElementById(id);
+      if (el) el.setAttribute('data-count-to', value);
+    };
+    setStat('stat-apps', totals.apps);
+    setStat('stat-neobancos', totals.neobancos);
+    setStat('stat-comisiones', totals.comisionesOcultas);
+    setStat('stat-recomendaciones', totals.recomendacionesPago);
+  }
+
   // --- Animated counters (ledger card stats) ---
   var counters = document.querySelectorAll('[data-count-to]');
   if (counters.length && !prefersReduced) {

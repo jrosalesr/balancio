@@ -47,10 +47,10 @@
   </div>
   <div class="ledger-card" data-reveal style="transition-delay:0.15s">
     <p class="ledger-card__title">Este mes en el balance</p>
-    <div class="ledger-row"><span>Apps analizadas</span><span class="val up" data-count-to="14">0</span></div>
-    <div class="ledger-row"><span>Neobancos comparados</span><span class="val up" data-count-to="6">0</span></div>
-    <div class="ledger-row"><span>Comisiones ocultas encontradas</span><span class="val down" data-count-to="9">0</span></div>
-    <div class="ledger-row"><span>Recomendaciones de pago</span><span class="val down" data-count-to="0">0</span></div>
+    <div class="ledger-row"><span>Apps analizadas</span><span id="stat-apps" class="val up" data-count-to="0">0</span></div>
+    <div class="ledger-row"><span>Neobancos comparados</span><span id="stat-neobancos" class="val up" data-count-to="0">0</span></div>
+    <div class="ledger-row"><span>Comisiones ocultas encontradas</span><span id="stat-comisiones" class="val down" data-count-to="0">0</span></div>
+    <div class="ledger-row"><span>Recomendaciones de pago</span><span id="stat-recomendaciones" class="val down" data-count-to="0">0</span></div>
   </div>
 </section>
 
@@ -98,6 +98,7 @@
     <button class="accept" id="cookie-accept">Aceptar</button>
   </div>
 </div>
+<script src="stats.js"></script>
 <script src="cookies.js"></script>
 <script src="animations.js"></script>
 
