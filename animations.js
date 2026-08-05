@@ -3,6 +3,33 @@ document.documentElement.classList.add('has-js');
 document.addEventListener('DOMContentLoaded', function () {
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // --- Ticker dinámico con los artículos reales (nada inventado) ---
+  var tickerTrack = document.getElementById('ticker-track');
+  var articleRows = document.querySelectorAll('.article-row');
+  if (tickerTrack && articleRows.length) {
+    var buildTickerItem = function (row) {
+      var titleEl = row.querySelector('.article-row__title');
+      var metaEl = row.querySelector('.article-row__meta');
+      var category = '';
+      if (metaEl) {
+        var parts = metaEl.innerHTML.split(/<br\s*\/?>/i);
+        category = parts.length > 1 ? parts[parts.length - 1].replace(/<[^>]+>/g, '').trim() : '';
+      }
+      var span = document.createElement('span');
+      span.className = 'ticker__item';
+      var b = document.createElement('b');
+      b.textContent = category.toUpperCase();
+      span.appendChild(b);
+      span.appendChild(document.createTextNode(' ' + (titleEl ? titleEl.textContent.trim() : '')));
+      return span;
+    };
+    var tickerItems = Array.prototype.map.call(articleRows, buildTickerItem);
+    // duplicado para el loop continuo
+    tickerItems.concat(tickerItems.map(function (el) { return el.cloneNode(true); })).forEach(function (el) {
+      tickerTrack.appendChild(el);
+    });
+  }
+
   // --- Scroll reveal ---
   var revealEls = document.querySelectorAll('[data-reveal], [data-reveal-list]');
   if (prefersReduced || !('IntersectionObserver' in window)) {
